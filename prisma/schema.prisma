@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Event {
+  id                String   @id @default(uuid())
+  name              String
+  email             String
+  date              DateTime
+  plan              String   @default("Basic") // Basic, Premium, Corporate
+  paymentStatus     String   @default("PENDING") // PENDING, PAID
+  organizerToken    String   @unique // Access to dashboard
+  cameraToken       String   @unique // Access to camera app
+  branding          String   @default("{}") // JSON string for branding config
+  maxUploads        Int      @default(25)
+  currentUploads    Int      @default(0)
+  uniqueParticipants Int     @default(0)
+  driveFolderId     String?  // Google Drive Folder ID
+  driveConnected    Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  uploads           Upload[]
+}
+
+model Upload {
+  id            String   @id @default(uuid())
+  eventId       String
+  event         Event    @relation(fields: [eventId], references: [id])
+  participantId String   // Anonymous ID to track unique users
+  timestamp     DateTime @default(now())
+}
