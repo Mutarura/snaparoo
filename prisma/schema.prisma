@@ -22,6 +22,13 @@ model Event {
   maxUploads        Int      @default(25)
   currentUploads    Int      @default(0)
   uniqueParticipants Int     @default(0)
+  endDate           DateTime?
+  guestLimit        Int      @default(10)
+  galleryViewing    String   @default("During")
+  allowGuestGallery Boolean  @default(true)
+  filters           String   @default("None")
+  mediaLimitPerGuest Int     @default(25)
+  backgroundPoster  String?
   driveFolderId     String?  // Google Drive Folder ID
   driveConnected    Boolean  @default(false)
   createdAt         DateTime @default(now())
